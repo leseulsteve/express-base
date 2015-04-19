@@ -1,0 +1,14 @@
+{
+  "name": "ubuntu1",
+  "version": "0.0.0",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git@bitbucket.org:leseulsteve/ubuntu1.git"
+  },
+  "dependencies": {
+    "express": "~4.12.2",
+    "leseulsteve-places": "git+ssh://git@bitbucket.org:leseulsteve/places_node.git#master",
+    "lodash-node": "^3.7.0"
+  }
+}
