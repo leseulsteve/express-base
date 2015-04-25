@@ -1,5 +1,6 @@
 var express = require('express'),
   app = express(),
+  bodyParser = require('body-parser'),
   bootstrapper = require('./src/bootstrapper.js');
 
 app.use(function(req, res, next) {
@@ -7,6 +8,10 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
+
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 
 bootstrapper.init(app);
 
