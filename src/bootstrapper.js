@@ -11,7 +11,7 @@ function getNodeModuleDirectories() {
 
 exports.init = function(app) {
 	var customModulesDirectories = _.filter(getNodeModuleDirectories(), function(dirName) {
-		return _.startsWith(dirName, 'leseulsteve');
+		return _.startsWith(dirName, 'gestigris');
 	});
 	_.forEach(customModulesDirectories, function(customModulesDirectory) {
 		require(customModulesDirectory)(app);

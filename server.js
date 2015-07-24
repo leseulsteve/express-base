@@ -1,12 +1,19 @@
 var config = require('./config/config'),
   express = require('express'),
+  methodOverride = require('method-override'),
   bodyParser = require('body-parser'),
+  morgan = require('morgan'),
+  http = require('http'),
+  chalk = require('chalk'),
+  helmet = require('helmet'),
   bootstrapper = require('./src/bootstrapper.js');
 
 
 // Initialize express app
 var app = express()
 app.set('server', http.createServer(app));
+
+app.use(morgan('dev'));
 
 // Use helmet to secure Express headers
 app.use(helmet.xframe());
@@ -23,9 +30,20 @@ app.use(function(req, res, next) {
   next();
 });
 
+app.options('*', function(req, res) {
+  res.sendStatus(200);
+});
+
 app.use(bodyParser.urlencoded({
+  limit: '50mb',
   extended: true
 }));
+
+app.use(bodyParser.json({
+  limit: '50mb'
+}));
+
+app.use(methodOverride());
 
 bootstrapper.init(app);
 
