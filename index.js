@@ -5,7 +5,7 @@ var express = require('express'),
   http = require('http'),
   helmet = require('helmet');
 
-function BaseApp() {
+var BaseApp = function() {
 
   return {
 
@@ -53,6 +53,6 @@ function BaseApp() {
       });
     }
   };
-}
+};
 
 module.exports = BaseApp;
