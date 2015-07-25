@@ -5,7 +5,7 @@ var express = require('express'),
   http = require('http'),
   helmet = require('helmet');
 
-var BaseApp = function() {
+function BaseApp() {
 
   return {
 
@@ -49,10 +49,10 @@ var BaseApp = function() {
 
       // Start the app by listening on <port>
       app.get('server').listen(port, function() {
-        callback();
+        callback(app);
       });
     }
   };
-};
+}
 
-module.exports = BaseApp;
+module.exports = new BaseApp();
