@@ -9,7 +9,7 @@ function BaseApp() {
 
   return {
 
-    init: function(port, callback) {
+    init: function(config, callback) {
 
       // Initialize express app
       var app = express()
@@ -48,7 +48,7 @@ function BaseApp() {
       app.use(methodOverride());
 
       // Start the app by listening on <port>
-      app.get('server').listen(port, function() {
+      app.get('server').listen(config.port, function() {
         callback(app);
       });
     }
