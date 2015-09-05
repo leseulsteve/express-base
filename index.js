@@ -5,7 +5,9 @@ var express = require('express'),
   bodyParser = require('body-parser'),
   morgan = require('morgan'),
   http = require('http'),
-  helmet = require('helmet');
+  helmet = require('helmet'),
+  glob = require('glob'),
+  _ = require('lodash-node');
 
 var BaseApp = function() {};
 
@@ -59,6 +61,50 @@ BaseApp.prototype.init = function(config, callback) {
 BaseApp.prototype.setMailerService = function(mailer) {
   var mailerService = require('./lib/mailer');
   mailerService.init(this.config.mailer, mailer, this.app);
+};
+
+BaseApp.prototype.initDynamicRouter = function(database, config) {
+  require('./lib/router')(this.app, database, config);
+};
+
+BaseApp.prototype.getBaseSchema = function() {
+  return require('./lib/base-schema');
+};
+
+BaseApp.prototype.getGlobbedFiles = function(globPatterns, removeRoot) {
+  // For context switching
+  var _this = this;
+
+  // URL paths regex
+  var urlRegex = new RegExp('^(?:[a-z]+:)?\/\/', 'i');
+
+  // The output array
+  var output = [];
+
+  // If glob pattern is array so we use each pattern in a recursive way, otherwise we use glob 
+  if (_.isArray(globPatterns)) {
+    globPatterns.forEach(function(globPattern) {
+      output = _.union(output, _this.getGlobbedFiles(globPattern, removeRoot));
+    });
+  } else if (_.isString(globPatterns)) {
+    if (urlRegex.test(globPatterns)) {
+      output.push(globPatterns);
+    } else {
+      glob(globPatterns, {
+        sync: true
+      }, function(err, files) {
+        if (removeRoot) {
+          files = files.map(function(file) {
+            return file.replace(removeRoot, '');
+          });
+        }
+
+        output = _.union(output, files);
+      });
+    }
+  }
+
+  return output;
 };
 
 module.exports = new BaseApp();
