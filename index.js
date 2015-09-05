@@ -57,8 +57,8 @@ BaseApp.prototype.init = function(config, callback) {
 };
 
 BaseApp.prototype.setMailerService = function(mailer) {
-  var mailer = require('./lib/mailer')(this.app);
-  mailer.init(this.config.mailer, mailer);
+  var mailer = require('./lib/mailer');
+  mailer.init(this.config.mailer, mailer, this.app);
 };
 
 module.exports = new BaseApp();
