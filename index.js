@@ -15,7 +15,7 @@ BaseApp.prototype.init = function(config, callback) {
 
   // Initialize express app
   this.app = express()
-  this.app.set('server', http.createServer(app));
+  this.app.set('server', http.createServer(this.app));
 
   this.app.use(morgan('dev'));
 
