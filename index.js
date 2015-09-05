@@ -49,15 +49,16 @@ BaseApp.prototype.init = function(config, callback) {
 
   this.app.use(methodOverride());
 
+  var that = this;
   // Start the app by listening on <port>
   this.app.get('server').listen(config.port, function() {
-    callback(this.app);
+    callback(that.app);
   });
 };
 
 BaseApp.prototype.setMailerService = function(mailer) {
-  var mailer = require('./lib/mailer')(app);
-  mailer.init(config.mailer, mailer);
+  var mailer = require('./lib/mailer')(this.app);
+  mailer.init(this.config.mailer, mailer);
 };
 
 module.exports = new BaseApp();
