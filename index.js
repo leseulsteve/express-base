@@ -53,7 +53,7 @@ BaseApp.prototype.init = function(config, callback) {
 
   var that = this;
   // Start the app by listening on <port>
-  this.app.get('server').listen(config.port, 127.0.0.1, function() {
+  this.app.get('server').listen(config.port, '127.0.0.1', function() {
     callback(that.app);
   });
 };
