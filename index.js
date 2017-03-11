@@ -40,6 +40,34 @@ BaseApp.prototype.init = function(config, callback) {
     res.sendStatus(200);
   });
 
+  this.app.get('*', function(req, res, next) {
+    if (req.query) {
+      _.forOwn(req.query, function(value, key) {
+        var obj;
+
+        if (_.isArray(value)) {
+          _.forEach(value, function(arrayValue, arrayIndex) {
+            var arrayObject;
+            try {
+              arrayObject = JSON.parse(arrayValue);
+            } catch (err) {}
+            if (arrayObject) {
+              value[arrayIndex] = arrayObject;
+            }
+          });
+        } else {
+          try {
+            obj = JSON.parse(value);
+          } catch (err) {}
+        }
+        if (obj) {
+          req.query[key] = obj;
+        }
+      });
+    }
+    next();
+  });
+
   this.app.use(bodyParser.urlencoded({
     limit: '50mb',
     extended: true
@@ -50,6 +78,7 @@ BaseApp.prototype.init = function(config, callback) {
   }));
 
   this.app.use(methodOverride());
+
 
   var that = this;
   // Start the app by listening on <port>
@@ -81,7 +110,7 @@ BaseApp.prototype.getGlobbedFiles = function(globPatterns, removeRoot) {
   // The output array
   var output = [];
 
-  // If glob pattern is array so we use each pattern in a recursive way, otherwise we use glob 
+  // If glob pattern is array so we use each pattern in a recursive way, otherwise we use glob
   if (_.isArray(globPatterns)) {
     globPatterns.forEach(function(globPattern) {
       output = _.union(output, _this.getGlobbedFiles(globPattern, removeRoot));
