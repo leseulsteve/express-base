@@ -67,6 +67,8 @@ BaseApp.prototype.init = function(config, callback) {
     }
     next();
   });
+  
+  this.app.use(boolParser());
 
   this.app.use(bodyParser.urlencoded({
     limit: '50mb',
