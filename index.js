@@ -3,6 +3,7 @@
 var express = require('express'),
   methodOverride = require('method-override'),
   bodyParser = require('body-parser'),
+  boolParser = require('express-query-boolean'),
   morgan = require('morgan'),
   http = require('http'),
   helmet = require('helmet'),
